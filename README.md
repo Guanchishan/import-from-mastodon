@@ -1,5 +1,7 @@
 [简体中文](README_zh-Hans.md)
 
+---
+
 # Import From Mastodon
 Automatically turn toots—short messages on [Mastodon](https://joinmastodon.org/)—into WordPress posts.
 
