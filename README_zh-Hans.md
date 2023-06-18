@@ -1,0 +1,75 @@
+[English](README.md)
+
+# 从 Mastodon 导入
+
+自动将 Mastodon（[链接](https://joinmastodon.org/)）上的嘟文 —— 短贴文，转换为 WordPress 文章。
+
+## 安装
+
+目前，你可以下载 [ZIP 文件](https://github.com/janboddez/import-from-mastodon/archive/refs/heads/master.zip)。上传至 `wp-content/plugins` 并解压。你还可以选择将结果文件夹从 `import-from-mastodon-master` 重命名为 `import-from-mastodon`（这个操作可能有助于解决未来可能的冲突）。
+
+激活插件后，请访问 设置 > 从 Mastodon 导入。填写你的实例的 URL 以及其他选项。点击保存更改。
+
+然后，在相同的设置页面上，点击授权访问按钮。这将带你到你的 Mastodon 实例，并允许你授权 WordPress 从你的时间线读取信息（我们不请求写入权限）。之后，你将自动被重定向到 WordPress。
+
+**注意**：WordPress 不会立即开始导入嘟嘟，但会在几分钟后开始。我将在下个版本中"修复"这个问题。
+
+## 工作原理
+
+大约每 15 分钟 —— 因为 WordPress 的计划任务系统并不精确 —— 你的 Mastodon 时间线会被检查新的嘟嘟，然后导入为你选择的文章类型。
+
+默认情况下，只考虑最近的 40 条嘟嘟（这也是 Mastodon API 允许的最大值。除非你每 15 分钟创建超过 40 条嘟嘟，否则这不应该是个问题）。
+
+### 注意事项
+
+当插件首次运行时，最多将导入 40 条（根据上述说明）嘟嘟（这可能在下个版本中更改为只导入一条）。从那时起，只有 _最新的_ 嘟嘟被考虑（我们使用 `since_id` API 参数告诉 Mastodon 为我们查找哪些嘟嘟。这个 `since_id` 对应最近导入的 _现有的_ ，即在 WordPress 中的文章）。
+
+如果这听起来有些混乱，那是因为确实如此。不过，或许并不那么复杂。不管怎样，你可以选择忘记它。
+
+## 转发和回复，以及自定义格式化
+
+可以选择排除或包含转发或回复。
+
+只是，嗯，要知道转发和回复可能看起来有点 _奇怪_，并且可能缺少一些上下文。
+
+### 话题串
+
+这并没有。如果启用了回复功能，对自己的回复将作为单独的新文章，而不是评论导入（再次，这可以做一个很好的插件扩展）。
+
+## 标签和黑名单
+
+**标签**：（可选）只查找带有这些标签的嘟嘟（并忽略所有其他嘟嘟）。标签之间用逗号分隔。  
+**黑名单**：（可选）忽略含有这些单词的嘟嘟（每行一个单词或单词的一部分）。要注意部分匹配！
+
+## 图片
+
+图片将被下载并[附加](https://wordpress.org/support/article/using-image-and-file-attachments/#attachment-to-a-post)到导入的嘟嘟，但尚未（或者说还未）自动包含 _在_ 文章中。
+
+然而，第一张图片将被设置为新导入文章的特色图片。当然，这种行为也可以更改：
+
+```
+add_filter( 'import_from_mastodon_featured_image', '__return_false' ); // 不设置特色图片
+
+```
+
+## 杂项
+
+实际上还有一些其他的过滤器和设置，我可能会逐渐提供更好的文档（尽管这些设置应该能自我解释）。
+
+### 自定义文章类型
+
+比如，如果你想让你导入的嘟嘟成为自定义文章类型（而不是默认的 `post`）：
+
+```
+add_filter( 'import_from_mastodon_args', function( $args, $status ) {
+$args['post_type'] = 'iwcpt_note'; // 自定义"post"类型。
+
+unset( $args['post_category'] ); // 因为我的自定义文章类型可能完全不支持"分类"分类法。
+
+return $args;
+}, 10, 2 );
+
+
+```
+
+上述 `$args` 实际上就是传递给 [`wp_insert_post()`](https://developer.wordpress.org/reference/functions/wp_insert_post/#parameters) 的参数（无穷的可能性！）。
