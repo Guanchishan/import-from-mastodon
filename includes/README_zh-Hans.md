@@ -64,3 +64,43 @@
 最后，这段代码还包含两个辅助功能函数，一个是获取Mastodon账户的ID，另一个是检查是否已经存在相似的文章。
 
 总的来说，这段代码是一个处理从Mastodon社交平台导入数据到WordPress的插件。它将Mastodon的状态消息转换为WordPress的文章，并处理媒体附件和其他相关信息，以在WordPress网站上正确显示。
+
+## class-options-handler.php
+
+### 功能
+
+这段代码为插件提供一个设置页面，该页面包含多个设置项，如：
+
+- Mastodon实例URL
+- 新导入的帖子状态
+- 新导入的帖子的作者
+- 新导入的帖子的默认类别
+- 是否仅导入公开帖子
+- 是否包括boosts（Mastodon中的转发）
+- 是否包括回复
+- 导入带有哪些标签的帖子
+- 忽略包含哪些单词的帖子
+
+用户可以在这个页面上设置这些选项，然后保存更改。此外，用户还可以授权WordPress从他们的Mastodon时间线中读取内容。最后，用户可以重置所有设置或撤销对Mastodon的访问权限。
+
+该段代码也为插件提供了一些调试功能，在设置页可选择打开。如果在WordPress中启用了WP_DEBUG模式，用户就可以在设置页面上看到插件的配置信息。这有助于调试和解决问题。
+
+### 原理
+
+- namespace Import_From_Mastodon; 表示这个类是在 “Import_From_Mastodon” 命名空间中。
+- class Options_Handler 定义了一个名为 “Options_Handler” 的类。
+- const DEFAULT_SETTINGS 和 const POST_STATUSES 定义了类的常量。默认设置是用于当选项没有被设置时作为默认值的一个关联数组。允许的文章状态是一个数组，列出了 WordPress 文章可能的状态。
+- $options 是一个私有的成员变量，存储插件的设置。
+- __construct() 是类的构造函数，当这个类被实例化时，它会被调用。它从 WordPress 的选项中获取插件的设置，如果没有设置，则使用默认设置。
+- register() 注册了许多 WordPress 的钩子，例如为 WordPress 后台添加菜单，为后台页面加载脚本，处理表单提交，以及在从 Mastodon 导入后设置最新的推文（toot）ID。
+- create_menu() 和 add_settings() 用于在 WordPress 后台创建一个新的设置页面，并注册这个插件的设置。
+- sanitize_settings($settings) 是一个处理提交的选项的函数。它接受通过 WordPress 管理页面提交的设置，验证并清理这些设置，然后返回要存储的选项。
+- request_access_token：这个函数使用授权代码（传入的参数）向Mastodon请求一个访问令牌。如果请求成功，它将保存访问令牌；如果请求失败，它将记录错误消息并返回 false。
+- revoke_access：这个函数会撤销WordPress对Mastodon的访问权限。如果撤销成功，它将删除访问令牌并返回 true；如果失败，它将记录响应并返回 false。
+- reset_options：这个函数会重置所有插件选项为默认设置。
+- admin_post：这是一个回调函数，它响应’admin-post.php’页面的请求。根据 GET 参数，它可能撤销访问权限，重置插件选项，或者执行其他未在代码段中展示的操作。
+- set_latest_toot：这个函数更新最近一次导入的Mastodon状态的ID。这个ID被保存在插件选项中。
+- forget_latest_toot：这个函数会删除插件选项中保存的最近一次导入的Mastodon状态的ID。
+- get_options：这个函数返回当前的插件选项。
+
+这段代码也使用了WordPress的核心函数，如wp_remote_post和update_option。同时，它也使用了WordPress的一些安全性实践，如检查用户权限、验证nonce、清理和转义URL。
