@@ -4,7 +4,7 @@
 
 # 从 Mastodon 导入
 
-该插件自动将 Mastodon（[链接](https://joinmastodon.org/)）上的嘟文——即短贴文——转换为 WordPress 贴文。
+该插件自动将 Mastodon（[链接](https://joinmastodon.org/)）上的嘟文（即短贴文）转换为 WordPress 贴文。
 
 ## 安装
 
@@ -12,7 +12,7 @@
 
 激活插件后，请访问 设置 > Import From Mastodon。填写你的实例的 URL 以及其他选项。点击保存更改。
 
-然后，在相同的设置页面上，点击授权访问按钮。这将带你到你的 Mastodon 实例，并允许你授权 WordPress 从你的时间线读取信息（我们不请求写入权限）。之后，你将自动被重定向到 WordPress。
+然后，在同一设置页面上，点击授权访问按钮。这将带你到你的 Mastodon 实例，并允许你授权 WordPress 从你的时间线读取信息（我们不请求写入权限）。之后，你将自动被重定向到 WordPress。
 
 **注意**：WordPress 不会立即开始导入嘟嘟，但会在几分钟后开始。我将在下个版本中「修复」这个问题。
 
@@ -60,13 +60,13 @@ add_filter( 'import_from_mastodon_featured_image', '__return_false' ); // 不设
 
 ### 自定义贴文类型
 
-比如，如果你想让你导入的嘟文成为自定义贴文类型（而不是默认的 `post`）：
+比如，如果想让你导入的嘟文成为自定义贴文类型（而不是默认的 `post`）：
 
 ```
 add_filter( 'import_from_mastodon_args', function( $args, $status ) {
 $args['post_type'] = 'iwcpt_note'; // 自定义「post」类型。
 
-unset( $args['post_category'] ); // 因为我的自定义贴文类型可能完全不支持「category」分类法。
+unset( $args['post_category'] ); // 因为自己的自定义贴文类型可能完全不支持「category」分类法。
 
 return $args;
 }, 10, 2 );
