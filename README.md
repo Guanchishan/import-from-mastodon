@@ -1,4 +1,4 @@
-[简体中文](README_zh-Hans.md)
+- [简体中文](README_zh-Hans.md)
 
 ---
 
