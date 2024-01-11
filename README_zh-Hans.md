@@ -1,10 +1,8 @@
-- [English](README.md)
-
----
-
 # 从 Mastodon 导入
 
 该插件自动将 Mastodon（[链接](https://joinmastodon.org/)）上的嘟文（即短贴文）转换为 WordPress 贴文。
+
+- [English](README.md)
 
 ## 安装
 
