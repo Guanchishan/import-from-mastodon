@@ -1,9 +1,7 @@
-- [简体中文](README_zh-Hans.md)
-
----
-
 # Import From Mastodon
 Automatically turn toots—short messages on [Mastodon](https://joinmastodon.org/)—into WordPress posts.
+
+- [简体中文](README_zh-Hans.md)
 
 ## Installation
 For now, download the [ZIP file](https://github.com/janboddez/import-from-mastodon/archive/refs/heads/master.zip). Upload to `wp-content/plugins` and unzip. (Optionally) rename the resulting folder from `import-from-mastodon-master` to `import-from-mastodon`. (This last step may help resolve possible future conflicts.)
