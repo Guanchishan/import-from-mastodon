@@ -22,6 +22,10 @@ The very first time this plugin does its thing, up to 40 (per the remark above) 
 
 If all that sounds confusing, it is. Well, maybe not. Regardless, it's okay to just forget about it.
 
+### If It Doesn't Work...
+
+If the import function doesn't seem to be working and you've left it for a while and it still does, consider going to the Settings page and clicking the "Reset Settings" button at the bottom.
+
 ## Boosts and Replies, and Custom Formatting
 It's possible to either exclude or include boosts or replies.
 
