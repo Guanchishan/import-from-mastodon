@@ -13,11 +13,6 @@ namespace Import_From_Mastodon;
 class Import_From_Mastodon {
 	private $instance_id;
 
-	public function __construct($instance_id = '') {
-		$this->instance_id = $instance_id;
-		// Use this instance ID to differentiate options, custom post types, cron jobs, etc.
-	}
-
 	/**
 	 * Import handler instance.
 	 *
@@ -37,26 +32,30 @@ class Import_From_Mastodon {
 	 *
 	 * @var Import_From_Mastodon $instance
 	 */
-	private static $instance;
+	private static $instances = []; // 使用数组存储多个实例
 
 	/**
-	 * Returns the single instance of this class.
+	 * Returns the single instance of this class based on instance_id.
 	 *
-	 * @return Fediverse_Icons_Jetpack Single class instance.
+	 * @param string $instance_id Instance identifier.
+	 * @return Import_From_Mastodon Class instance.
 	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
+	public static function get_instance($instance_id = '') {
+		if (!isset(self::$instances[$instance_id])) {
+			self::$instances[$instance_id] = new self($instance_id);
 		}
 
-		return self::$instance;
+		return self::$instances[$instance_id];
 	}
 
 	/**
-	 * (Private) constructor.
+	 * （私有）Constructor.
+	 *
+	 * @param string $instance_id Instance identifier.
 	 */
-	private function __construct() {
-		// Empty.
+	private function __construct($instance_id = '') {
+		$this->instance_id = $instance_id;
+		// Use this instance ID to differentiate options, custom post types, cron jobs, etc.
 	}
 
 	/**
