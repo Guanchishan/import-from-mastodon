@@ -100,8 +100,9 @@ class Import_From_Mastodon {
 	 * Schedules the Mastodon API call.
 	 */
 	public function activate() {
-		if ( false === wp_next_scheduled( 'import_from_mastodon_get_statuses' ) ) {
-			wp_schedule_event( time() + 900, 'every_15_minutes', 'import_from_mastodon_get_statuses' );
+		$task_hook = 'import_from_mastodon_get_statuses_' . $this->instance_id;
+		if ( false === wp_next_scheduled( $task_hook ) ) {
+			wp_schedule_event( time() + 900, 'every_15_minutes', $task_hook );
 		}
 	}
 
