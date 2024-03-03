@@ -49,7 +49,7 @@ class Import_From_Mastodon {
 	}
 
 	/**
-	 * （私有）Constructor.
+	 * (Private) Constructor.
 	 *
 	 * @param string $instance_id Instance identifier.
 	 */
