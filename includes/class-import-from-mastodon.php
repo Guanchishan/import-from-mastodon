@@ -74,11 +74,11 @@ class Import_From_Mastodon {
 		// Allow i18n.
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 
-		$this->options_handler = new Options_Handler();
+		$this->options_handler = new Options_Handler($this->instance_id);
 		$this->options_handler->register();
 
 		// Enable polling Mastodon for toots.
-		$this->import_handler = new Import_Handler( $this->options_handler );
+		$this->import_handler = new Import_Handler($this->options_handler, $this->instance_id);
 		$this->import_handler->register();
 	}
 
@@ -110,7 +110,8 @@ class Import_From_Mastodon {
 	 * Unschedules any cron jobs.
 	 */
 	public function deactivate() {
-		wp_clear_scheduled_hook( 'import_from_mastodon_get_statuses' );
+		$task_hook = 'import_from_mastodon_get_statuses_' . $this->instance_id;
+		wp_clear_scheduled_hook($task_hook);
 	}
 
 	/**
