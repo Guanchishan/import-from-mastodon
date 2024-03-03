@@ -11,6 +11,13 @@ namespace Import_From_Mastodon;
  * Main plugin class.
  */
 class Import_From_Mastodon {
+	private $instance_id;
+
+	public function __construct($instance_id = '') {
+		$this->instance_id = $instance_id;
+		// Use this instance ID to differentiate options, custom post types, cron jobs, etc.
+	}
+
 	/**
 	 * Import handler instance.
 	 *
