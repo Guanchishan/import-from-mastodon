@@ -17,6 +17,7 @@ class Import_Handler {
 	 * @var array $options Plugin options.
 	 */
 	private $options = array();
+	private $instance_id; // 实例ID属性
 
 	/**
 	 * Constructor.
@@ -24,6 +25,7 @@ class Import_Handler {
 	 * @param Options_Handler $options_handler The plugin's Options Handler.
 	 */
 	public function __construct( $options_handler ) {
+		$this->instance_id = $instance_id; // 设置实例ID
 		$this->options = $options_handler->get_options();
 	}
 
@@ -31,7 +33,8 @@ class Import_Handler {
 	 * Registers hook callbacks.
 	 */
 	public function register() {
-		add_action( 'import_from_mastodon_get_statuses', array( $this, 'get_statuses' ) );
+		// 注意：这里使用了instance_id来创建一个唯一的定时任务标识符
+                add_action( 'import_from_mastodon_get_statuses_' . $this->instance_id, array( $this, 'get_statuses' ) );
 	}
 
 	/**
