@@ -24,7 +24,7 @@ class Import_Handler {
 	 *
 	 * @param Options_Handler $options_handler The plugin's Options Handler.
 	 */
-	public function __construct( $options_handler ) {
+	public function __construct($options_handler, $instance_id = '') {
 		$this->instance_id = $instance_id; // 设置实例ID
 		$this->options = $options_handler->get_options();
 	}
