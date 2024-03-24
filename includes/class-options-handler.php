@@ -52,11 +52,10 @@ class Options_Handler {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
-		$this->options = get_option(
-			'import_from_mastodon_settings',
-			self::DEFAULT_SETTINGS
-		);
+	public function __construct($instance_id = '') {
+		$this->instance_id = $instance_id; // 存储实例ID
+		$option_key = 'import_from_mastodon_settings_' . $this->instance_id; // 使用实例ID创建设置键
+		$this->options = get_option($option_key, self::DEFAULT_SETTINGS);
 	}
 
 	/**
